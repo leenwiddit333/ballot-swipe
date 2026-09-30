@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ballot Swipe</title>
+<meta name="description" content="Swipe through every California proposition, see what yes and no actually mean, and walk away with a ballot cheat sheet.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,500..900&family=IBM+Plex+Mono:wght@500&family=Public+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="app">
+  <header class="bar">
+    <button class="brand" id="home" type="button" aria-label="Ballot Swipe home">
+      <span class="brand-mark" aria-hidden="true"></span>
+      <span class="brand-name">Ballot Swipe</span>
+    </button>
+    <div>
+      <div class="progress" id="progress" aria-live="polite"></div>
+      <div class="meter" aria-hidden="true"><i id="meter"></i></div>
+    </div>
+  </header>
+
+  <main id="main" class="screen"></main>
+
+  <footer id="footer"></footer>
+</div>
+
+<dialog class="sheet" id="sheet" aria-labelledby="sheet-title"></dialog>
+
+<script src="js/data-ca-2026-general.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
