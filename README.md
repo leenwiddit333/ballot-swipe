@@ -57,7 +57,7 @@ Any static host works (Netlify, Vercel, GitHub Pages, Cloudflare Pages). Point i
 
 ## Fact-checking
 
-`docs/fact-check-list.md` lists every factual claim in the app, numbered, with a sign-off line per prop. Regenerate it after editing the data (the script is in the project history) and check each claim against the primary source, not just an AI summary.
+`docs/fact-check-list.md` lists every factual claim in the app, numbered, with a sign-off line per prop. Regenerate it after editing the data with `node scripts/fact-check-list.js > docs/fact-check-list.md` and check each claim against the primary source, not just an AI summary.
 
 ## Trust and safety checklist before launch
 
