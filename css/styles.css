@@ -183,7 +183,8 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-
 .title-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; }
 .title-row > div { min-width: 0; }
 .card h2 { font-size: var(--s-2xl); font-weight: 900; font-stretch: 70%; }
-.official { font-size: var(--s-xs); color: var(--muted); margin: 4px 0 0; }
+.official { font-size: var(--s-sm); color: var(--ink); border-left: 4px solid var(--edge); padding: 2px 0 2px 12px; display: grid; gap: 2px; font-family: Georgia, "Times New Roman", serif; }
+.official b { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
 .listen {
   flex: none; appearance: none; border: 2px solid var(--edge); background: var(--sun); color: #1b1336;
   border-radius: 999px; padding: 6px 12px; font-size: var(--s-xs); font-weight: 800; display: flex; align-items: center; gap: 6px;
@@ -191,7 +192,7 @@ h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-
 }
 .listen[aria-pressed="true"] { background: var(--poppy); }
 .listen svg { width: 14px; height: 14px; }
-.eli5 { background: var(--wash); border-radius: 12px; padding: 10px 12px; font-size: var(--s-sm); display: grid; gap: 4px; }
+.eli5 { background: var(--wash); border: 2px solid var(--t-elections); border-radius: 12px; padding: 10px 12px; font-size: var(--s-md); display: grid; gap: 4px; }
 .eli5 b, .mean b { font-family: var(--f-mono); font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
 .eli5 b { color: var(--muted); }
 .means { display: grid; gap: 8px; }

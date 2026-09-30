@@ -32,7 +32,7 @@
       start: "Start swiping", resume: "Pick up where you left off", seeSheet: "See my cheat sheet",
       topic: { housing: "Housing", budget: "Taxes & budget", elections: "Elections", health: "Health", environment: "Environment" },
       linked: (list) => "Linked to Prop " + list,
-      plainEnglish: "In plain English", yesMeans: "A YES vote means", noMeans: "A NO vote means",
+      plainEnglish: "In normal human English, please", officialTitle: "Official title (the wording on your ballot)", yesMeans: "A YES vote means", noMeans: "A NO vote means",
       supportersSay: "Supporters say:", opponentsSay: "Opponents say:",
       more: "Full breakdown, money & sources",
       listen: "Listen", stop: "Stop",
@@ -79,7 +79,7 @@
       start: "Empezar", resume: "Seguir donde te quedaste", seeSheet: "Ver mi guía rápida",
       topic: { housing: "Vivienda", budget: "Impuestos y presupuesto", elections: "Elecciones", health: "Salud", environment: "Medio ambiente" },
       linked: (list) => "Ligada a Prop " + list,
-      plainEnglish: "En palabras sencillas", yesMeans: "Votar SÍ significa", noMeans: "Votar NO significa",
+      plainEnglish: "En palabras sencillas, por favor", officialTitle: "Título oficial (lo que dice tu boleta)", yesMeans: "Votar SÍ significa", noMeans: "Votar NO significa",
       supportersSay: "Quienes la apoyan dicen:", opponentsSay: "Quienes se oponen dicen:",
       more: "Detalles, dinero y fuentes",
       listen: "Escuchar", stop: "Parar",
@@ -237,7 +237,8 @@
     return '<article class="card ' + (extraClass || "enter") + '" data-num="' + esc(p.num) + '" aria-label="Prop ' + esc(p.num) + ": " + esc(p.nickname) + '"' + (top ? "" : ' aria-hidden="true"') + ">" +
       '<div class="band" data-topic="' + esc(p.topic) + '"><span class="num">Prop ' + esc(p.num) + "</span><span>" + esc(L.topic[p.topic] || "") + "</span></div>" +
       '<div class="card-body">' +
-        '<div class="title-row"><div><h2>' + esc(p.nickname) + '</h2><p class="official">' + esc(p.title) + "</p></div>" + (top ? listenBtn("listen-card") : "") + "</div>" +
+        '<div class="title-row"><div><h2>' + esc(p.nickname) + "</h2></div>" + (top ? listenBtn("listen-card") : "") + "</div>" +
+        '<div class="official"><b>' + esc(L.officialTitle) + "</b>" + esc(p.title) + "</div>" +
         (conflict ? "<div>" + conflict + "</div>" : "") +
         '<div class="eli5"><b>' + esc(L.plainEnglish) + "</b>" + esc(p.eli5) + "</div>" +
         '<div class="means">' +
@@ -390,9 +391,10 @@
     const nv = '<span class="unverified">' + esc(L.notVerified) + "</span>";
     $sheet.innerHTML =
       '<div class="sheet-inner">' +
-        '<div class="sheet-head"><div><span class="kicker">PROP ' + esc(p.num) + " · " + esc(L.placedBy) + " " + esc(p.placedBy) + '</span><h2 id="sheet-title">' + esc(p.nickname) + '</h2><p class="official">' + esc(p.title) + "</p></div>" +
+        '<div class="sheet-head"><div><span class="kicker">PROP ' + esc(p.num) + " · " + esc(L.placedBy) + " " + esc(p.placedBy) + '</span><h2 id="sheet-title">' + esc(p.nickname) + "</h2></div>" +
         '<div class="sheet-tools">' + listenBtn("listen-full") + '<button class="close" type="button" id="sheet-close" aria-label="' + esc(L.close) + '">✕</button></div></div>' +
         (p.conflictNote ? '<div class="conflict"><b>' + esc(L.headsUp) + "</b> " + esc(p.conflictNote) + "</div>" : "") +
+        '<div class="official"><b>' + esc(L.officialTitle) + "</b>" + esc(p.title) + "</div>" +
         '<div class="eli5"><b>' + esc(L.plainEnglish) + "</b>" + esc(p.eli5) + "</div>" +
         '<section class="sec"><h3>' + esc(L.secDoes) + "</h3>" + list(p.plain) + "</section>" +
         '<section class="sec"><h3>' + esc(L.secCost) + "</h3><p>" + esc(p.fiscal) + "</p></section>" +
