@@ -54,3 +54,16 @@ Any static host works (Netlify, Vercel, GitHub Pages, Cloudflare Pages). Point i
 - [ ] Reading-level pass on every card
 - [ ] Local measures by county
 - [ ] Share link for a cheat sheet
+
+## Fact-checking
+
+`docs/fact-check-list.md` lists every factual claim in the app, numbered, with a sign-off line per prop. Regenerate it after editing the data (the script is in the project history) and check each claim against the primary source, not just an AI summary.
+
+## Trust and safety checklist before launch
+
+- Disclaimer on every screen: independent project, not affiliated with the state, any campaign, or any party.
+- "Report a mistake" link: set `reportUrl` in the data file.
+- Paraphrase sources. Don't copy news articles word for word; link to them.
+- Every funding claim links to a source. Stick to amounts and names that appear in filings or reporting.
+- Election dates and deadlines are checked against sos.ca.gov before every release.
+- No tracking and no data collection. Answers stay in the voter's own browser.

@@ -18,6 +18,8 @@ window.ELECTION = {
   electionDate: "2026-11-03",
   officialGuide: "https://voterguide.sos.ca.gov/propositions/",
   moneyTracker: "https://www.sos.ca.gov/campaign-lobbying/helpful-resources/measure-contributions",
+  // Paste a Google Form (or similar) link here. The "Report a mistake" links stay hidden until this is set.
+  reportUrl: "",
   props: [
     {
       num: "1",

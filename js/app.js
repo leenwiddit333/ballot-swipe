@@ -62,7 +62,9 @@
       fact2: 'Not registered? The deadline to register online is October 19. After that you can still register and vote the same day at your county elections office or a vote center. <a href="https://registertovote.ca.gov" target="_blank" rel="noopener">registertovote.ca.gov ↗</a>',
       fact3: "Official Voter Guide:",
       say: { prop: "Proposition", yesMeans: "A yes vote means:", noMeans: "A no vote means:", sup: "Supporters say:", opp: "Opponents say:", does: "What it does:", cost: "Cost to the state:" },
-      noVoice: "Read-aloud isn't available in this browser."
+      noVoice: "Read-aloud isn't available in this browser.",
+      disclaimer: "Independent volunteer project. Not affiliated with the California Secretary of State, any campaign, or any political party. Always double-check with the Official Voter Guide.",
+      report: "See something wrong? Report a mistake"
     },
     es: {
       speechLang: "es-US", dateLocale: "es-US", other: "EN", otherLabel: "View in English",
@@ -109,7 +111,9 @@
       fact2: '¿No estás inscrito? La fecha límite para inscribirte en línea es el 19 de octubre. Después de esa fecha, puedes inscribirte y votar el mismo día en la oficina electoral de tu condado o en un centro de votación. <a href="https://registertovote.ca.gov/es" target="_blank" rel="noopener">registertovote.ca.gov ↗</a>',
       fact3: "Guía Oficial para el Votante:",
       say: { prop: "Propuesta", yesMeans: "Votar sí significa:", noMeans: "Votar no significa:", sup: "Quienes la apoyan dicen:", opp: "Quienes se oponen dicen:", does: "Qué hace:", cost: "Costo para el estado:" },
-      noVoice: "La lectura en voz alta no está disponible en este navegador."
+      noVoice: "La lectura en voz alta no está disponible en este navegador.",
+      disclaimer: "Proyecto independiente de voluntarios. No está afiliado al Secretario de Estado de California, a ninguna campaña ni a ningún partido político. Confirma siempre con la Guía Oficial para el Votante.",
+      report: "¿Ves un error? Repórtalo"
     }
   };
 
@@ -202,6 +206,12 @@
     return drafts || tr ? '<div class="draft-note" role="note">' + esc(t().draft(drafts, N)) + "</div>" : "";
   }
 
+  function disclaimerHTML() {
+    const L = t();
+    return '<p class="disclaimer">' + esc(L.disclaimer) +
+      (E.reportUrl ? ' <a href="' + esc(E.reportUrl) + '" target="_blank" rel="noopener">' + esc(L.report) + " ↗</a>" : "") + "</p>";
+  }
+
   // ---------- intro ----------
   function renderIntro() {
     const L = t();
@@ -222,7 +232,8 @@
       '<div class="tools">' +
         '<button class="cta" id="start" type="button">' + esc(started ? L.resume : L.start) + "</button>" +
         (started ? '<button class="ghost" id="view-sheet" type="button">' + esc(L.seeSheet) + "</button>" : "") +
-      "</div>";
+      "</div>" +
+      disclaimerHTML();
     $footer.innerHTML = "";
     document.getElementById("start").onclick = () => go(state.index >= N ? "results" : "deck");
     const vs = document.getElementById("view-sheet");
@@ -409,6 +420,7 @@
         '<section class="sec"><h3>' + esc(L.secRead) + '</h3><div class="sources">' +
           p.sources.map((s) => '<a href="' + esc(s.url) + '" target="_blank" rel="noopener">' + esc(s.label) + " ↗</a>").join("") +
         "</div></section>" +
+        disclaimerHTML() +
       "</div>";
     const closeSheet = () => { stopSpeaking(); $sheet.close(); };
     document.getElementById("sheet-close").onclick = closeSheet;
@@ -474,7 +486,7 @@
         '<button class="ghost" id="restart" type="button">' + esc(L.restart) + "</button>" +
       "</div>" +
       '<div id="img-slot"></div>' +
-      '<div class="facts"><p>' + L.fact1 + "</p><p>" + L.fact2 + "</p><p>" + esc(L.fact3) + ' <a href="' + esc(E.officialGuide) + '" target="_blank" rel="noopener">voterguide.sos.ca.gov ↗</a></p></div>';
+      '<div class="facts"><p>' + L.fact1 + "</p><p>" + L.fact2 + "</p><p>" + esc(L.fact3) + ' <a href="' + esc(E.officialGuide) + '" target="_blank" rel="noopener">voterguide.sos.ca.gov ↗</a></p>' + disclaimerHTML() + "</div>";
     $footer.innerHTML = "";
 
     $main.querySelectorAll("[data-cycle]").forEach((b) => (b.onclick = () => cycle(b.dataset.cycle)));

@@ -312,6 +312,8 @@ dialog.sheet::backdrop { background: rgb(19 14 36 / 0.55); }
 .img-out img { width: 100%; border: 2px solid var(--edge); border-radius: 12px; }
 .img-out p { margin: 0; font-size: var(--s-sm); color: var(--muted); }
 textarea#copy-fallback { width: 100%; font-family: var(--f-mono); font-size: var(--s-xs); background: var(--card); color: var(--ink); border: 2px solid var(--edge); border-radius: 10px; padding: 8px; }
+.disclaimer { margin: 0; font-size: var(--s-xs); color: var(--muted); }
+.disclaimer a { font-weight: 700; color: var(--ink); }
 #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 30; width: 100%; height: 100%; }
 
 @media (prefers-reduced-motion: reduce) {
