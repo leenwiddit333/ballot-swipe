@@ -9,6 +9,7 @@ Starts with the **November 3, 2026 California General Election** (14 props).
 - Each card shows what the prop does, what YES means, what NO means, and each side's strongest argument.
 - "Full breakdown" adds the cost to the state, named supporters and opponents, who is funding each side, and links to the original sources.
 - Swipe right = YES, swipe left = NO, Skip = leave it blank. Arrow keys work on desktop.
+- Optional "Smash or pass" mode (off by default; "Me late o paso" in Spanish) relabels the swipes with dating-app energy. The cheat sheet and saved image always use the ballot words YES and NO.
 - Props that interact (40, 41, 42) show a warning if your answers could cancel each other out.
 - The cheat sheet can be copied as text, saved as an image, or printed. Answers stay only in the viewer's browser. Nothing is sent to a server.
 

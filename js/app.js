@@ -24,6 +24,14 @@
       h1: 'Know every prop before you fill in <span class="hl">a single oval.</span>',
       introBody: (n) => n + " statewide propositions are on your ballot. For each one, see what it actually does, what a YES and a NO vote mean, what each side argues, and who is paying for it. Then swipe. At the end you get a cheat sheet to bring with you.",
       howYes: "Swipe right if you want to vote <b>YES</b> on the prop.",
+      spicy: {
+        yes: "SMASH", no: "PASS",
+        howYes: "Swipe right to <b>SMASH</b>. That means you'll vote <b>YES</b>.",
+        howNo: "Swipe left to <b>PASS</b>. That means you'll vote <b>NO</b>.",
+        yesMeans: "Smash = vote YES, which means", noMeans: "Pass = vote NO, which means",
+        sheetEyebrow: "Your matches", sheetH1: "It's a match. Here's your ballot."
+      },
+      modeLabel: "Smash or pass mode", modeHint: "Same facts, dating-app energy. Your cheat sheet still says YES and NO.",
       howNo: "Swipe left if you want to vote <b>NO</b>.",
       howSkip: "Not sure? Skip it. Leaving a prop blank is allowed, and the rest of your ballot still counts.",
       howListen: "Tap <b>Listen</b> on any card to hear it read out loud.",
@@ -73,6 +81,14 @@
       h1: 'Conoce cada propuesta antes de llenar <span class="hl">un solo óvalo.</span>',
       introBody: (n) => "Hay " + n + " propuestas estatales en tu boleta. Para cada una, ve qué hace de verdad, qué significa votar SÍ o NO, qué dice cada lado y quién la está pagando. Luego desliza. Al final tendrás una guía rápida para llevar contigo.",
       howYes: "Desliza a la derecha si quieres votar <b>SÍ</b> en la propuesta.",
+      spicy: {
+        yes: "ME LATE", no: "PASO",
+        howYes: "Desliza a la derecha si <b>te late</b>. Eso significa que vas a votar <b>SÍ</b>.",
+        howNo: "Desliza a la izquierda para <b>pasar</b>. Eso significa que vas a votar <b>NO</b>.",
+        yesMeans: "Me late = votar SÍ, que significa", noMeans: "Paso = votar NO, que significa",
+        sheetEyebrow: "Tus matches", sheetH1: "¡Hicieron match! Aquí está tu boleta."
+      },
+      modeLabel: "Modo me late o paso", modeHint: "Los mismos datos, con energía de app de citas. Tu guía rápida sigue diciendo SÍ y NO.",
       howNo: "Desliza a la izquierda si quieres votar <b>NO</b>.",
       howSkip: "¿No estás seguro? Sáltala. Puedes dejar una propuesta en blanco y el resto de tu boleta sigue contando.",
       howListen: "Toca <b>Escuchar</b> en cualquier tarjeta para oírla en voz alta.",
@@ -118,7 +134,7 @@
   };
 
   // ---------- state ----------
-  const blankState = () => ({ screen: "intro", index: 0, answers: {}, history: [], lang: guessLang() });
+  const blankState = () => ({ screen: "intro", index: 0, answers: {}, history: [], lang: guessLang(), mode: "classic" });
   let state = Object.assign(blankState(), load() || {});
 
   function guessLang() {
@@ -132,6 +148,13 @@
   }
 
   const t = () => T[state.lang] || T.en;
+  const spicy = () => state.mode === "spicy";
+  // Ballot words never change; swipe words change with the mode.
+  const yesWord = () => (state.lang === "es" ? "SÍ" : "YES");
+  const swipeYes = () => (spicy() ? t().spicy.yes : yesWord());
+  const swipeNo = () => (spicy() ? t().spicy.no : "NO");
+  // Pick a string from the spicy set when that mode is on.
+  const S = (key) => (spicy() && t().spicy[key]) || t()[key];
   // Prop content for the current language, falling back to English field by field.
   function P(i) {
     const base = E.props[i];
@@ -223,11 +246,14 @@
       "<h1>" + L.h1 + "</h1>" +
       "<p>" + esc(L.introBody(N)) + "</p>" +
       '<ul class="how">' +
-        '<li><span class="gesture g-yes">→ ' + (state.lang === "es" ? "SÍ" : "YES") + "</span><span>" + L.howYes + "</span></li>" +
-        '<li><span class="gesture g-no">← NO</span><span>' + L.howNo + "</span></li>" +
+        '<li><span class="gesture g-yes">→ ' + esc(swipeYes()) + "</span><span>" + S("howYes") + "</span></li>" +
+        '<li><span class="gesture g-no">← ' + esc(swipeNo()) + "</span><span>" + S("howNo") + "</span></li>" +
         '<li><span class="gesture g-skip">' + esc(L.skip.toLowerCase()) + "</span><span>" + L.howSkip + "</span></li>" +
         (CAN_SPEAK ? '<li><span class="gesture g-skip" style="display:grid;place-items:center"><span style="width:16px;height:16px;display:block">' + speakerIcon + '</span></span><span>' + L.howListen + "</span></li>" : "") +
       "</ul>" +
+      '<button class="mode" id="mode" type="button" role="switch" aria-checked="' + spicy() + '">' +
+        '<span class="mode-text"><b>' + esc(L.modeLabel) + "</b><span>" + esc(L.modeHint) + "</span></span>" +
+        '<span class="switch" aria-hidden="true"><i></i></span></button>' +
       '<div class="method"><p>' + L.method1 + "</p><p>" + L.method2 + "</p></div>" +
       '<div class="tools">' +
         '<button class="cta" id="start" type="button">' + esc(started ? L.resume : L.start) + "</button>" +
@@ -236,6 +262,7 @@
       disclaimerHTML();
     $footer.innerHTML = "";
     document.getElementById("start").onclick = () => go(state.index >= N ? "results" : "deck");
+    document.getElementById("mode").onclick = () => { state.mode = spicy() ? "classic" : "spicy"; go("intro"); };
     const vs = document.getElementById("view-sheet");
     if (vs) vs.onclick = () => go("results");
   }
@@ -253,8 +280,8 @@
         (conflict ? "<div>" + conflict + "</div>" : "") +
         '<div class="eli5"><b>' + esc(L.plainEnglish) + "</b>" + esc(p.eli5) + "</div>" +
         '<div class="means">' +
-          '<div class="mean yes"><b>' + esc(L.yesMeans) + "</b>" + esc(p.yesMeans) + "</div>" +
-          '<div class="mean no"><b>' + esc(L.noMeans) + "</b>" + esc(p.noMeans) + "</div>" +
+          '<div class="mean yes"><b>' + esc(S("yesMeans")) + "</b>" + esc(p.yesMeans) + "</div>" +
+          '<div class="mean no"><b>' + esc(S("noMeans")) + "</b>" + esc(p.noMeans) + "</div>" +
         "</div>" +
         '<div class="says">' +
           '<p><span class="who">' + esc(L.supportersSay) + "</span> " + esc(p.yesSays) + "</p>" +
@@ -262,8 +289,8 @@
         "</div>" +
         (top ? '<button class="more" type="button" data-more="' + esc(p.num) + '">' + esc(L.more) + "</button>" : "") +
       "</div>" +
-      '<span class="stamp yes" aria-hidden="true">' + (state.lang === "es" ? "SÍ" : "YES") + "</span>" +
-      '<span class="stamp no" aria-hidden="true">NO</span>' +
+      '<span class="stamp yes" aria-hidden="true">' + esc(swipeYes()) + "</span>" +
+      '<span class="stamp no" aria-hidden="true">' + esc(swipeNo()) + "</span>" +
     "</article>";
   }
 
@@ -277,12 +304,12 @@
       '<div class="deck-wrap"><div class="deck" id="deck">' + (i + 1 < N ? cardHTML(i + 1, "under") : "") + cardHTML(i) + "</div></div>";
     $footer.innerHTML =
       '<div class="actions">' +
-        '<button class="vote no" id="btn-no" type="button" aria-label="' + esc(L.voteNo(p.num)) + '"><span class="oval" aria-hidden="true"></span>NO</button>' +
+        '<button class="vote no" id="btn-no" type="button" aria-label="' + esc(L.voteNo(p.num)) + '"><span class="oval" aria-hidden="true"></span>' + voteLabel(swipeNo(), "NO") + "</button>" +
         '<div class="mid">' +
           '<button class="skip" id="btn-skip" type="button">' + esc(L.skip) + "</button>" +
           '<button class="undo" id="btn-undo" type="button"' + (state.history.length ? "" : " disabled") + ">" + esc(L.undo) + "</button>" +
         "</div>" +
-        '<button class="vote yes" id="btn-yes" type="button" aria-label="' + esc(L.voteYes(p.num)) + '">' + (state.lang === "es" ? "SÍ" : "YES") + '<span class="oval" aria-hidden="true"></span></button>' +
+        '<button class="vote yes" id="btn-yes" type="button" aria-label="' + esc(L.voteYes(p.num)) + '">' + voteLabel(swipeYes(), yesWord()) + '<span class="oval" aria-hidden="true"></span></button>' +
       "</div>";
 
     const card = $main.querySelector(".card:not(.under)");
@@ -294,6 +321,10 @@
     document.getElementById("btn-no").onclick = () => fling(card, "no");
     document.getElementById("btn-skip").onclick = () => fling(card, "skip");
     document.getElementById("btn-undo").onclick = undo;
+  }
+
+  function voteLabel(word, ballot) {
+    return spicy() ? '<span class="vlabel">' + esc(word) + "<small>= " + esc(ballot) + "</small></span>" : esc(word);
   }
 
   function cardSpeech(p) {
@@ -361,7 +392,8 @@
     stopSpeaking();
     const x = choice === "yes" ? window.innerWidth : choice === "no" ? -window.innerWidth : 0;
     const stamp = card.querySelector(".stamp." + choice);
-    if (stamp) stamp.style.opacity = 1;
+    if (stamp) { stamp.style.opacity = 1; stamp.classList.add("pop"); }
+    if (spicy() && choice !== "skip") { try { navigator.vibrate && navigator.vibrate(choice === "yes" ? [12, 40, 12] : 18); } catch (e) { /* no haptics */ } }
     card.classList.remove("enter");
     card.classList.add("animating");
     card.style.transform = choice === "skip" ? "translateY(-40px) scale(0.95)" : "translateX(" + x + "px) rotate(" + x / 25 + "deg)";
@@ -462,7 +494,7 @@
     const yesWord = state.lang === "es" ? "SÍ" : "YES";
     $main.innerHTML =
       draftNote() +
-      '<div class="results-head"><div><span class="eyebrow">' + esc(L.sheetEyebrow) + "</span><h1>" + esc(L.sheetH1) + "</h1></div>" +
+      '<div class="results-head"><div><span class="eyebrow">' + esc(S("sheetEyebrow")) + "</span><h1>" + esc(S("sheetH1")) + "</h1></div>" +
         (unanswered.length ? "" : '<div class="sticker" aria-hidden="true"><span>' + esc(L.sticker) + "</span></div>") + "</div>" +
       '<p class="lede">' + esc(L.sheetLede) + "</p>" +
       (unanswered.length ? '<div class="conflict"><b>' + esc(L.notAnswered(unanswered.length)) + '</b> <button class="more" id="resume" type="button" style="padding:0">' + esc(L.keepSwiping) + "</button></div>" : "") +
