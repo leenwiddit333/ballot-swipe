@@ -19,6 +19,8 @@ window.ELECTION = {
   officialGuide: "https://voterguide.sos.ca.gov/propositions/",
   moneyTracker: "https://www.sos.ca.gov/campaign-lobbying/helpful-resources/measure-contributions",
   // Paste a Google Form (or similar) link here. The "Report a mistake" links stay hidden until this is set.
+  // Shown on the shareable story image.
+  siteUrl: "ballot-swipe.netlify.app",
   reportUrl: "https://forms.gle/tAG8himnpMgRuPiU9",
   props: [
     {

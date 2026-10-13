@@ -29,8 +29,21 @@
         howYes: "Swipe right to <b>SMASH</b>. That means you'll vote <b>YES</b>.",
         howNo: "Swipe left to <b>PASS</b>. That means you'll vote <b>NO</b>.",
         yesMeans: "Smash = vote YES, which means", noMeans: "Pass = vote NO, which means",
-        sheetEyebrow: "Your matches", sheetH1: "It's a match. Here's your ballot."
+        sheetEyebrow: "Your matches", sheetH1: "It's a match. Here's your ballot.",
+        skip: "Ghost", undo: "↶ come back",
+        howSkip: "Not sure? Ghost it. Leaving a prop blank is allowed, and the rest of your ballot still counts.",
+        supportersSay: "Green flags (supporters):", opponentsSay: "Red flags (opponents):",
+        supportersSayH: "Green flags, per supporters", opponentsSayH: "Red flags, per opponents",
+        secMoney: "Who's paying for this date?",
+        linked: (list) => "It's complicated w/ Prop " + list,
+        headsUp: "It's complicated:",
+        conflictToast: (a, b) => "Love triangle alert: YES on Prop " + a + " and Prop " + b + " may cancel each other out. Open the full breakdown.",
+        headsUpOn: (a, b) => "Love triangle, Props " + a + " & " + b + ":",
+        storyTop: "I smashed or passed", storyBottom: "Know what you're voting on before November 3."
       },
+      storyBtn: "Share that you finished", storyTop: "I swiped through", storyMid: (n) => "all " + n + " California props", storyBottom: "Know what you're voting on before November 3.",
+      storyHelp: "Your votes aren't on this image, only that you finished. Press and hold to save it, then post it to your story.",
+      storyAlt: "Story image saying you swiped through every California proposition",
       modeLabel: "Smash or pass mode", modeHint: "Same facts, dating-app energy. Your cheat sheet still says YES and NO.",
       howNo: "Swipe left if you want to vote <b>NO</b>.",
       howSkip: "Not sure? Skip it. Leaving a prop blank is allowed, and the rest of your ballot still counts.",
@@ -86,8 +99,21 @@
         howYes: "Desliza a la derecha si <b>te late</b>. Eso significa que vas a votar <b>SÍ</b>.",
         howNo: "Desliza a la izquierda para <b>pasar</b>. Eso significa que vas a votar <b>NO</b>.",
         yesMeans: "Me late = votar SÍ, que significa", noMeans: "Paso = votar NO, que significa",
-        sheetEyebrow: "Tus matches", sheetH1: "¡Hicieron match! Aquí está tu boleta."
+        sheetEyebrow: "Tus matches", sheetH1: "¡Hicieron match! Aquí está tu boleta.",
+        skip: "Dejar en visto", undo: "↶ vuelve",
+        howSkip: "¿No estás seguro? Déjala en visto. Puedes dejar una propuesta en blanco y el resto de tu boleta sigue contando.",
+        supportersSay: "Banderas verdes (quienes la apoyan):", opponentsSay: "Banderas rojas (quienes se oponen):",
+        supportersSayH: "Banderas verdes, según quienes la apoyan", opponentsSayH: "Banderas rojas, según quienes se oponen",
+        secMoney: "¿Quién paga la cita?",
+        linked: (list) => "Es complicado con Prop " + list,
+        headsUp: "Es complicado:",
+        conflictToast: (a, b) => "Triángulo amoroso: votar SÍ en la Prop " + a + " y en la Prop " + b + " podría anular uno al otro. Abre los detalles.",
+        headsUpOn: (a, b) => "Triángulo amoroso, Props " + a + " y " + b + ":",
+        storyTop: "Le di me late o paso a", storyBottom: "Entiende lo que vas a votar antes del 3 de noviembre."
       },
+      storyBtn: "Comparte que terminaste", storyTop: "Ya revisé", storyMid: (n) => "las " + n + " propuestas de California", storyBottom: "Entiende lo que vas a votar antes del 3 de noviembre.",
+      storyHelp: "Tus votos no aparecen en esta imagen, solo que terminaste. Mantén presionada la imagen para guardarla y súbela a tu historia.",
+      storyAlt: "Imagen para historias que dice que revisaste todas las propuestas de California",
       modeLabel: "Modo me late o paso", modeHint: "Los mismos datos, con energía de app de citas. Tu guía rápida sigue diciendo SÍ y NO.",
       howNo: "Desliza a la izquierda si quieres votar <b>NO</b>.",
       howSkip: "¿No estás seguro? Sáltala. Puedes dejar una propuesta en blanco y el resto de tu boleta sigue contando.",
@@ -248,7 +274,7 @@
       '<ul class="how">' +
         '<li><span class="gesture g-yes">→ ' + esc(swipeYes()) + "</span><span>" + S("howYes") + "</span></li>" +
         '<li><span class="gesture g-no">← ' + esc(swipeNo()) + "</span><span>" + S("howNo") + "</span></li>" +
-        '<li><span class="gesture g-skip">' + esc(L.skip.toLowerCase()) + "</span><span>" + L.howSkip + "</span></li>" +
+        '<li><span class="gesture g-skip">' + esc(S("skip").toLowerCase()) + "</span><span>" + S("howSkip") + "</span></li>" +
         (CAN_SPEAK ? '<li><span class="gesture g-skip" style="display:grid;place-items:center"><span style="width:16px;height:16px;display:block">' + speakerIcon + '</span></span><span>' + L.howListen + "</span></li>" : "") +
       "</ul>" +
       '<button class="mode" id="mode" type="button" role="switch" aria-checked="' + spicy() + '">' +
@@ -270,7 +296,7 @@
   // ---------- deck ----------
   function cardHTML(i, extraClass) {
     const p = P(i), L = t();
-    const conflict = p.conflictsWith && p.conflictsWith.length ? '<span class="chip">' + esc(L.linked(p.conflictsWith.join(" & "))) + "</span>" : "";
+    const conflict = p.conflictsWith && p.conflictsWith.length ? '<span class="chip">' + esc(S("linked")(p.conflictsWith.join(" & "))) + "</span>" : "";
     const top = !extraClass;
     return '<article class="card ' + (extraClass || "enter") + '" data-num="' + esc(p.num) + '" aria-label="Prop ' + esc(p.num) + ": " + esc(p.nickname) + '"' + (top ? "" : ' aria-hidden="true"') + ">" +
       '<div class="band" data-topic="' + esc(p.topic) + '"><span class="num">Prop ' + esc(p.num) + "</span><span>" + esc(L.topic[p.topic] || "") + "</span></div>" +
@@ -284,8 +310,8 @@
           '<div class="mean no"><b>' + esc(S("noMeans")) + "</b>" + esc(p.noMeans) + "</div>" +
         "</div>" +
         '<div class="says">' +
-          '<p><span class="who">' + esc(L.supportersSay) + "</span> " + esc(p.yesSays) + "</p>" +
-          '<p><span class="who">' + esc(L.opponentsSay) + "</span> " + esc(p.noSays) + "</p>" +
+          '<p><span class="who">' + esc(S("supportersSay")) + "</span> " + esc(p.yesSays) + "</p>" +
+          '<p><span class="who">' + esc(S("opponentsSay")) + "</span> " + esc(p.noSays) + "</p>" +
         "</div>" +
         (top ? '<button class="more" type="button" data-more="' + esc(p.num) + '">' + esc(L.more) + "</button>" : "") +
       "</div>" +
@@ -306,8 +332,8 @@
       '<div class="actions">' +
         '<button class="vote no" id="btn-no" type="button" aria-label="' + esc(L.voteNo(p.num)) + '"><span class="oval" aria-hidden="true"></span>' + voteLabel(swipeNo(), "NO") + "</button>" +
         '<div class="mid">' +
-          '<button class="skip" id="btn-skip" type="button">' + esc(L.skip) + "</button>" +
-          '<button class="undo" id="btn-undo" type="button"' + (state.history.length ? "" : " disabled") + ">" + esc(L.undo) + "</button>" +
+          '<button class="skip" id="btn-skip" type="button">' + esc(S("skip")) + "</button>" +
+          '<button class="undo" id="btn-undo" type="button"' + (state.history.length ? "" : " disabled") + ">" + esc(S("undo")) + "</button>" +
         "</div>" +
         '<button class="vote yes" id="btn-yes" type="button" aria-label="' + esc(L.voteYes(p.num)) + '">' + voteLabel(swipeYes(), yesWord()) + '<span class="oval" aria-hidden="true"></span></button>' +
       "</div>";
@@ -340,7 +366,7 @@
   }
   function fullSpeech(p) {
     const S = t().say;
-    return cardSpeech(p).concat([S.does].concat(p.plain.map(moneyWords)), [S.cost + " " + moneyWords(p.fiscal)], p.conflictNote ? [t().headsUp + " " + p.conflictNote] : []);
+    return cardSpeech(p).concat([S.does].concat(p.plain.map(moneyWords)), [S.cost + " " + moneyWords(p.fiscal)], p.conflictNote ? [((spicy() && t().spicy.headsUp) || t().headsUp) + " " + p.conflictNote] : []);
   }
 
   function bindSwipe(card) {
@@ -436,16 +462,16 @@
       '<div class="sheet-inner">' +
         '<div class="sheet-head"><div><span class="kicker">PROP ' + esc(p.num) + " · " + esc(L.placedBy) + " " + esc(p.placedBy) + '</span><h2 id="sheet-title">' + esc(p.nickname) + "</h2></div>" +
         '<div class="sheet-tools">' + listenBtn("listen-full") + '<button class="close" type="button" id="sheet-close" aria-label="' + esc(L.close) + '">✕</button></div></div>' +
-        (p.conflictNote ? '<div class="conflict"><b>' + esc(L.headsUp) + "</b> " + esc(p.conflictNote) + "</div>" : "") +
+        (p.conflictNote ? '<div class="conflict"><b>' + esc(S("headsUp")) + "</b> " + esc(p.conflictNote) + "</div>" : "") +
         '<div class="official"><b>' + esc(L.officialTitle) + "</b>" + esc(p.title) + "</div>" +
         '<div class="eli5"><b>' + esc(L.plainEnglish) + "</b>" + esc(p.eli5) + "</div>" +
         '<section class="sec"><h3>' + esc(L.secDoes) + "</h3>" + list(p.plain) + "</section>" +
         '<section class="sec"><h3>' + esc(L.secCost) + "</h3><p>" + esc(p.fiscal) + "</p></section>" +
         '<section class="sec"><h3>' + esc(L.secSides) + '</h3><div class="sides">' +
-          '<div class="side yes"><h4>' + esc(L.supportersSayH) + "</h4><p>" + esc(p.yesSays) + "</p>" + list(p.supporters) + "</div>" +
-          '<div class="side no"><h4>' + esc(L.opponentsSayH) + "</h4><p>" + esc(p.noSays) + "</p>" + list(p.opponents) + "</div>" +
+          '<div class="side yes"><h4>' + esc(S("supportersSayH")) + "</h4><p>" + esc(p.yesSays) + "</p>" + list(p.supporters) + "</div>" +
+          '<div class="side no"><h4>' + esc(S("opponentsSayH")) + "</h4><p>" + esc(p.noSays) + "</p>" + list(p.opponents) + "</div>" +
         "</div></section>" +
-        '<section class="sec"><h3>' + esc(L.secMoney) + '</h3><div class="sides">' +
+        '<section class="sec"><h3>' + esc(S("secMoney")) + '</h3><div class="sides">' +
           '<div class="side yes"><h4>' + esc(L.yesCampaign) + "</h4><p>" + (m.yes ? esc(m.yes) : nv) + "</p></div>" +
           '<div class="side no"><h4>' + esc(L.noCampaign) + "</h4><p>" + (m.no ? esc(m.no) : nv) + "</p></div>" +
         '</div><p style="font-size:var(--s-xs);color:var(--muted)">' + esc(L.latestTotals) + ' <a href="' + esc(E.moneyTracker) + '" target="_blank" rel="noopener">' + esc(L.tracker) + "</a></p></section>" +
@@ -468,7 +494,7 @@
     const p = PROPS[idxOf(num)];
     if (!p.conflictsWith || !p.conflictsWith.length || state.answers[num] !== "yes") return null;
     const clash = p.conflictsWith.filter((o) => state.answers[o] === "yes");
-    return clash.length ? t().conflictToast(num, clash.join(" & ")) : null;
+    return clash.length ? S("conflictToast")(num, clash.join(" & ")) : null;
   }
   function allConflicts() {
     const seen = new Set(), out = [];
@@ -498,7 +524,7 @@
         (unanswered.length ? "" : '<div class="sticker" aria-hidden="true"><span>' + esc(L.sticker) + "</span></div>") + "</div>" +
       '<p class="lede">' + esc(L.sheetLede) + "</p>" +
       (unanswered.length ? '<div class="conflict"><b>' + esc(L.notAnswered(unanswered.length)) + '</b> <button class="more" id="resume" type="button" style="padding:0">' + esc(L.keepSwiping) + "</button></div>" : "") +
-      conflicts.map((c) => '<div class="conflict"><b>' + esc(L.headsUpOn(c.a, c.b)) + "</b> " + esc(c.note) + "</div>").join("") +
+      conflicts.map((c) => '<div class="conflict"><b>' + esc(S("headsUpOn")(c.a, c.b)) + "</b> " + esc(c.note) + "</div>").join("") +
       '<div class="ballot" role="list">' +
         '<div class="ballot-head"><span>' + esc(L.stateMeasures) + "</span><span>" + esc(formatDate(E.electionDate)) + "</span></div>" +
         PROPS.map((_, i) => {
@@ -514,6 +540,7 @@
       '<div class="tools">' +
         '<button class="cta" id="copy" type="button">' + esc(L.copy) + "</button>" +
         '<button class="ghost" id="image" type="button">' + esc(L.image) + "</button>" +
+        (unanswered.length ? "" : '<button class="ghost" id="story" type="button">' + esc(L.storyBtn) + "</button>") +
         (FRAMED ? "" : '<button class="ghost" id="print" type="button">' + esc(L.print) + "</button>") +
         '<button class="ghost" id="restart" type="button">' + esc(L.restart) + "</button>" +
       "</div>" +
@@ -526,6 +553,8 @@
     if (r) r.onclick = () => { state.index = idxOf(unanswered[0].num); go("deck"); };
     document.getElementById("copy").onclick = copyText;
     document.getElementById("image").onclick = makeImage;
+    const st = document.getElementById("story");
+    if (st) st.onclick = makeStory;
     const pr = document.getElementById("print");
     if (pr) pr.onclick = () => window.print();
     document.getElementById("restart").onclick = confirmRestart;
@@ -619,6 +648,77 @@
     slot.innerHTML = '<div class="img-out"><img alt="' + esc(L.imgAlt) + '" src="' + url + '"><p>' + esc(L.imgHelp) + "</p>" +
       (FRAMED ? "" : '<a class="ghost" href="' + url + '" download="ballot-cheat-sheet.png" style="justify-self:start;text-decoration:none">' + esc(L.download) + "</a>") + "</div>";
     slot.scrollIntoView({ behavior: REDUCED() ? "auto" : "smooth", block: "start" });
+  }
+  // 9:16 image for Instagram/TikTok stories. Shows that you finished, never how you voted.
+  function makeStory() {
+    const L = t();
+    const W = 1080, H = 1920;
+    const c = document.createElement("canvas");
+    c.width = W; c.height = H;
+    const g = c.getContext("2d");
+    const ink = "#1b1336";
+    const grad = g.createLinearGradient(0, 0, W, H);
+    grad.addColorStop(0, "#ffd76e"); grad.addColorStop(0.5, "#ffb3d4"); grad.addColorStop(1, "#b9a4ff");
+    g.fillStyle = grad; g.fillRect(0, 0, W, H);
+    const cols = ["#ff7a45", "#ffc53d", "#10b86f", "#3cc8f0", "#a78bff", "#f0287f"];
+    // A fanned stack of cards, one per prop color.
+    for (let i = 0; i < 5; i++) {
+      g.save();
+      g.translate(W / 2, 760);
+      g.rotate((i - 2) * 0.09);
+      g.fillStyle = ink; roundRect(g, -300 + 14, -390 + 14, 600, 780, 44); g.fill();
+      g.fillStyle = "#ffffff"; roundRect(g, -300, -390, 600, 780, 44); g.fill();
+      g.lineWidth = 8; g.strokeStyle = ink; g.stroke();
+      g.fillStyle = cols[i % cols.length]; roundRect(g, -300, -390, 600, 120, { tl: 44, tr: 44, br: 0, bl: 0 }); g.fill(); g.stroke();
+      g.restore();
+    }
+    g.save(); g.translate(W / 2, 760); g.rotate(0.18);
+    g.fillStyle = "#ffffff"; g.strokeStyle = ink; g.lineWidth = 8;
+    g.textAlign = "center";
+    g.font = "900 120px Archivo, 'Arial Narrow', sans-serif";
+    // A neutral "14/14" stamp: the image should never hint at how anyone voted.
+    const word = N + "/" + N;
+    g.strokeStyle = "#067a48"; g.lineWidth = 12;
+    const ww = g.measureText(word).width + 80;
+    roundRect(g, -ww / 2, -90, ww, 170, 28); g.fillStyle = "#ffffff"; g.fill(); g.stroke();
+    g.fillStyle = "#067a48"; g.fillText(word, 0, 45);
+    g.restore();
+    g.textAlign = "center"; g.fillStyle = ink;
+    g.font = "800 66px Archivo, 'Arial Narrow', sans-serif";
+    g.fillText(S("storyTop"), W / 2, 1300);
+    g.font = "900 104px Archivo, 'Arial Narrow', sans-serif";
+    wrapText(g, L.storyMid(N), W / 2, 1420, W - 140, 110);
+    g.font = "500 40px 'Public Sans', sans-serif";
+    wrapText(g, S("storyBottom"), W / 2, 1650, W - 200, 52);
+    g.fillStyle = ink; roundRect(g, W / 2 - 330, 1730, 660, 96, 48); g.fill();
+    g.fillStyle = "#ffffff"; g.font = "500 40px 'IBM Plex Mono', monospace";
+    g.fillText(E.siteUrl || "voterguide.sos.ca.gov", W / 2, 1792);
+
+    const url = c.toDataURL("image/png");
+    const slot = document.getElementById("img-slot");
+    slot.innerHTML = '<div class="img-out story-out"><img alt="' + esc(L.storyAlt) + '" src="' + url + '"><p>' + esc(L.storyHelp) + "</p>" +
+      (FRAMED ? "" : '<a class="ghost" href="' + url + '" download="ballot-swipe-story.png" style="justify-self:start;text-decoration:none">' + esc(L.download) + "</a>") + "</div>";
+    slot.scrollIntoView({ behavior: REDUCED() ? "auto" : "smooth", block: "start" });
+  }
+  function roundRect(g, x, y, w, h, r) {
+    const R = typeof r === "number" ? { tl: r, tr: r, br: r, bl: r } : r;
+    g.beginPath();
+    g.moveTo(x + R.tl, y);
+    g.lineTo(x + w - R.tr, y); g.quadraticCurveTo(x + w, y, x + w, y + R.tr);
+    g.lineTo(x + w, y + h - R.br); g.quadraticCurveTo(x + w, y + h, x + w - R.br, y + h);
+    g.lineTo(x + R.bl, y + h); g.quadraticCurveTo(x, y + h, x, y + h - R.bl);
+    g.lineTo(x, y + R.tl); g.quadraticCurveTo(x, y, x + R.tl, y);
+    g.closePath();
+  }
+  function wrapText(g, text, x, y, max, lh) {
+    const words = text.split(" ");
+    let line = "", yy = y;
+    words.forEach((w) => {
+      const test = line ? line + " " + w : w;
+      if (g.measureText(test).width > max && line) { g.fillText(line, x, yy); line = w; yy += lh; }
+      else line = test;
+    });
+    if (line) g.fillText(line, x, yy);
   }
   function truncate(g, text, max) {
     if (g.measureText(text).width <= max) return text;
